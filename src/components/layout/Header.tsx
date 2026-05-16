@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 bg-surface/80 backdrop-blur-md border-b border-surface-border">
       <div className="flex items-center justify-between px-4 py-3 max-w-xl mx-auto">
-        <h1 className="text-xl font-bold text-gold tracking-widest">PostAI</h1>
+        <h1 className="text-xl font-bold text-gold tracking-widest">SnaPick</h1>
         <UserButton
           appearance={{
             elements: {
