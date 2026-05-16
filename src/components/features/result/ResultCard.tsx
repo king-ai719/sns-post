@@ -1,12 +1,14 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 
 import CopyButton from './CopyButton'
 import type { GeneratedContent, Platform } from '@/types'
 
 interface ResultCardProps {
   result: GeneratedContent
+  imageUrl?: string
   onReset: () => void
 }
 
@@ -17,7 +19,7 @@ const PLATFORM_TABS: { id: Platform; label: string; emoji: string }[] = [
   { id: 'hashtags', label: 'ハッシュタグ', emoji: '#' },
 ]
 
-export default function ResultCard({ result, onReset }: ResultCardProps) {
+export default function ResultCard({ result, imageUrl, onReset }: ResultCardProps) {
   const [activePlatform, setActivePlatform] = useState<Platform>('instagram')
 
   const contentMap: Record<Platform, string> = {
@@ -46,6 +48,13 @@ export default function ResultCard({ result, onReset }: ResultCardProps) {
         </button>
       </div>
 
+      {/* 画像表示 */}
+      {imageUrl && (
+        <div className="relative w-full aspect-square rounded-xl overflow-hidden max-h-64">
+          <Image src={imageUrl} alt="投稿画像" fill className="object-cover" />
+        </div>
+      )}
+
       {/* プラットフォームタブ */}
       <div className="flex gap-1 bg-surface-2 p-1 rounded-xl overflow-x-auto">
         {PLATFORM_TABS.map((tab) => (
@@ -69,37 +78,28 @@ export default function ResultCard({ result, onReset }: ResultCardProps) {
       <div className="relative">
         <div className="bg-surface-2 rounded-xl p-4 min-h-24">
           {activePlatform === 'hashtags' ? (
-            // ハッシュタグ表示
             <div className="flex flex-wrap gap-2">
               {result.hashtags.map((tag, i) => (
-                <span
-                  key={i}
-                  className="inline-block bg-surface-3 text-brand text-sm px-2.5 py-1 rounded-full"
-                >
+                <span key={i} className="inline-block bg-surface-3 text-brand text-sm px-2.5 py-1 rounded-full">
                   #{tag}
                 </span>
               ))}
             </div>
           ) : (
-            // テキスト投稿文
             <p className="text-white text-sm leading-relaxed whitespace-pre-wrap">{activeContent}</p>
           )}
         </div>
-
-        {/* コピーボタン */}
         <div className="flex justify-end mt-2">
           <CopyButton text={activeContent} />
         </div>
       </div>
 
-      {/* 文字数表示（X用） */}
       {activePlatform === 'x' && (
         <p className={`text-xs text-right ${result.xPost.length > 140 ? 'text-red-400' : 'text-zinc-500'}`}>
           {result.xPost.length}/140文字
         </p>
       )}
 
-      {/* 全コピーボタン */}
       <div className="pt-2 border-t border-surface-border">
         <CopyButton
           text={`【Instagram】\n${result.instagram}\n\n【X】\n${result.xPost}\n\n【ハッシュタグ】\n${result.hashtags.map((h) => `#${h}`).join(' ')}`}
