@@ -26,7 +26,7 @@ export default function SignInPage() {
       });
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
-        router.push("/");
+        router.push("/dashboard")
       }
     } catch (err: any) {
       setError(err.errors?.[0]?.message ?? "メールアドレスまたはパスワードが正しくありません。");
@@ -41,7 +41,7 @@ export default function SignInPage() {
       await signIn.authenticateWithRedirect({
         strategy: "oauth_google",
         redirectUrl: "/sso-callback",
-        redirectUrlComplete: "/",
+        redirectUrlComplete: "/dashboard",
       });
     } catch (err: any) {
       setError(err.errors?.[0]?.message ?? "Googleログインに失敗しました。");
