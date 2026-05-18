@@ -64,7 +64,7 @@ export default function PostForm({ onSubmit, isLoading }: PostFormProps) {
           {/* グレーアウトしたアップローダー */}
           <div className="relative opacity-50 pointer-events-none select-none">
             <ImageUploader
-              preview={undefined}
+              preview={null}
               isUploading={false}
               onFileSelect={() => {}}
               onClear={() => {}}
