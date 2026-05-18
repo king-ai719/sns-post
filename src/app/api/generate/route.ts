@@ -52,7 +52,7 @@ export async function POST(req: NextRequest): Promise<NextResponse<GenerateApiRe
   }
 
   const plan: string = profile.plan ?? 'free'
-  const monthlyLimit = PLAN_LIMITS[plan] ?? PLAN_LIMITS.free
+  const monthlyLimit = PLAN_LIMITS[plan] ?? 10 
   const imageAllowed = PLAN_IMAGE_ALLOWED[plan] ?? false
 
   // 画像制限チェック
