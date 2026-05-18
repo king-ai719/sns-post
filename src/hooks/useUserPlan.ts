@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useUser } from '@clerk/nextjs'
-import { createBrowserSupabase } from '@/lib/supabase/client'
+import { supabase } from '@/lib/supabase/client'
 
 export function useUserPlan() {
   const { user } = useUser()
@@ -13,7 +13,6 @@ export function useUserPlan() {
     if (!user) return
 
     const fetchPlan = async () => {
-      const supabase = createBrowserSupabase()
       const { data } = await supabase
         .from('profiles')
         .select('plan')
