@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
       // サブスクリプション取得してプラン判定
       const subscription = await stripe.subscriptions.retrieve(session.subscription as string)
       const priceId = subscription.items.data[0]?.price.id
-      const plan = PRICE_TO_PLAN[priceId] ?? 'free'
+      const plan = priceId ? (PRICE_TO_PLAN[priceId] ?? 'free') : 'free'
 
       await supabase
         .from('profiles')
@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
     case 'customer.subscription.updated': {
       const subscription = event.data.object as Stripe.Subscription
       const priceId = subscription.items.data[0]?.price.id
-      const plan = PRICE_TO_PLAN[priceId] ?? 'free'
+      const plan = priceId ? (PRICE_TO_PLAN[priceId] ?? 'free') : 'free'
 
       await supabase
         .from('profiles')
