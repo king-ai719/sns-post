@@ -2,10 +2,24 @@ import { auth } from '@clerk/nextjs/server'
 import { NextRequest, NextResponse } from 'next/server'
 
 import { createServerSupabase } from '@/lib/supabase/server'
-import { buildUserPrompt, RATE_LIMIT_PER_DAY, SYSTEM_PROMPT } from '@/constants/prompts'
+import { buildUserPrompt, SYSTEM_PROMPT } from '@/constants/prompts'
 import { parseGeneratedContent } from '@/lib/utils'
 import type { GenerateFormInput, GenerateApiResponse } from '@/types'
 import Anthropic from '@anthropic-ai/sdk'
+
+// プランごとの月間上限
+const PLAN_LIMITS: Record<string, number> = {
+  free: 10,
+  light: 30,
+  pro: 100,
+}
+
+// プランごとの画像解析可否
+const PLAN_IMAGE_ALLOWED: Record<string, boolean> = {
+  free: false,
+  light: true,
+  pro: true,
+}
 
 export async function POST(req: NextRequest): Promise<NextResponse<GenerateApiResponse>> {
   const { userId } = await auth()
@@ -26,28 +40,44 @@ export async function POST(req: NextRequest): Promise<NextResponse<GenerateApiRe
 
   const supabase = createServerSupabase()
 
+  // プロフィール取得（plan列を追加で取得）
   const { data: profile, error: profileError } = await supabase
     .from('profiles')
     .upsert({ clerk_id: userId }, { onConflict: 'clerk_id' })
-    .select('id')
+    .select('id, plan')
     .single()
 
   if (profileError || !profile) {
     return NextResponse.json({ error: 'プロフィールの取得に失敗しました' }, { status: 500 })
   }
 
-  const today = new Date().toISOString().split('T')[0]!
+  const plan: string = profile.plan ?? 'free'
+  const monthlyLimit = PLAN_LIMITS[plan] ?? PLAN_LIMITS.free
+  const imageAllowed = PLAN_IMAGE_ALLOWED[plan] ?? false
+
+  // 画像制限チェック
+  if (body.imageUrl && !imageAllowed) {
+    return NextResponse.json(
+      { error: '画像解析はLightプラン以上でご利用いただけます。' },
+      { status: 403 },
+    )
+  }
+
+  // 月次レート制限チェック
+  const now = new Date()
+  const yearMonth = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}` // "2026-05"
+
   const { data: rateLimit } = await supabase
     .from('rate_limits')
     .select('count')
     .eq('user_id', profile.id)
-    .eq('date', today)
+    .eq('year_month', yearMonth)
     .single()
 
   const currentCount = rateLimit?.count ?? 0
-  if (currentCount >= RATE_LIMIT_PER_DAY) {
+  if (currentCount >= monthlyLimit) {
     return NextResponse.json(
-      { error: `1日の生成上限（${RATE_LIMIT_PER_DAY}回）に達しました。` },
+      { error: `今月の生成上限（${monthlyLimit}回）に達しました。プランをアップグレードしてください。` },
       { status: 429 },
     )
   }
@@ -56,14 +86,13 @@ export async function POST(req: NextRequest): Promise<NextResponse<GenerateApiRe
   const anthropic = new Anthropic({ apiKey: process.env['ANTHROPIC_API_KEY'] })
   const userPrompt = buildUserPrompt(body)
 
-  // メッセージ構築（画像あり/なし）
   type ContentBlock =
     | { type: 'text'; text: string }
     | { type: 'image'; source: { type: 'url'; url: string } }
 
   const contentBlocks: ContentBlock[] = []
 
-  if (body.imageUrl) {
+  if (body.imageUrl && imageAllowed) {
     contentBlocks.push({
       type: 'image',
       source: { type: 'url', url: body.imageUrl },
@@ -96,9 +125,10 @@ export async function POST(req: NextRequest): Promise<NextResponse<GenerateApiRe
   const generated = parseGeneratedContent(rawContent)
 
   await Promise.all([
+    // 月次カウントをupsert
     supabase.from('rate_limits').upsert(
-      { user_id: profile.id, date: today, count: currentCount + 1 },
-      { onConflict: 'user_id,date' },
+      { user_id: profile.id, year_month: yearMonth, count: currentCount + 1 },
+      { onConflict: 'user_id,year_month' },
     ),
     supabase.from('generations').insert({
       user_id: profile.id,

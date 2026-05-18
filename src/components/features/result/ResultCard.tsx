@@ -15,7 +15,8 @@ interface ResultCardProps {
 const PLATFORM_TABS: { id: Platform; label: string; emoji: string }[] = [
   { id: 'instagram', label: 'Instagram', emoji: '📷' },
   { id: 'x', label: 'X', emoji: '𝕏' },
-  { id: 'reels', label: 'リール', emoji: '🎬' },
+  { id: 'reels', label: 'Reels', emoji: '🎬' },
+  { id: 'tiktok', label: 'TikTok', emoji: '🎵' },
   { id: 'hashtags', label: 'ハッシュタグ', emoji: '#' },
 ]
 
@@ -26,6 +27,7 @@ export default function ResultCard({ result, imageUrl, onReset }: ResultCardProp
     instagram: result.instagram,
     x: result.xPost,
     reels: result.reelsCaption,
+    tiktok: result.tiktokCaption,
     hashtags: result.hashtags.map((h) => `#${h}`).join(' '),
   }
 
@@ -102,7 +104,7 @@ export default function ResultCard({ result, imageUrl, onReset }: ResultCardProp
 
       <div className="pt-2 border-t border-surface-border">
         <CopyButton
-          text={`【Instagram】\n${result.instagram}\n\n【X】\n${result.xPost}\n\n【ハッシュタグ】\n${result.hashtags.map((h) => `#${h}`).join(' ')}`}
+          text={`【Instagram】\n${result.instagram}\n\n【X】\n${result.xPost}\n\n【リール】\n${result.reelsCaption}\n\n【TikTok】\n${result.tiktokCaption}\n\n【ハッシュタグ】\n${result.hashtags.map((h) => `#${h}`).join(' ')}`}
           className="w-full justify-center"
         />
       </div>

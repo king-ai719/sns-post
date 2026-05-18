@@ -15,6 +15,7 @@ export interface GeneratedContent {
   xPost: string
   hashtags: string[]
   reelsCaption: string
+  tiktokCaption: string
 }
 
 // ===== 生成履歴（DB行） =====
@@ -32,6 +33,7 @@ export interface Generation {
   xPost: string
   hashtags: string[]
   reelsCaption: string
+  tiktokCaption: string
   tokensUsed?: number
   createdAt: string
 }
@@ -55,7 +57,7 @@ export type Target =
   | '学生'
   | 'ビジネスマン'
 
-export type Platform = 'instagram' | 'x' | 'reels' | 'hashtags'
+export type Platform = 'instagram' | 'x' | 'reels' | 'tiktok' | 'hashtags'
 
 // ===== API レスポンス =====
 export interface ApiResponse<T> {

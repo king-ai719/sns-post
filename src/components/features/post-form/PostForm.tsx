@@ -1,9 +1,11 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 
 import ImageUploader from './ImageUploader'
 import { useImageUpload } from '@/hooks/useImageUpload'
+import { useUserPlan } from '@/hooks/useUserPlan'
 import type { GenerateFormInput, Mood, Target } from '@/types'
 
 const MOODS: Mood[] = ['温かみ', 'おしゃれ', '活気', 'こだわり', 'ナチュラル', 'ラグジュアリー']
@@ -24,6 +26,7 @@ export default function PostForm({ onSubmit, isLoading }: PostFormProps) {
   const [imageUrl, setImageUrl] = useState<string | undefined>()
 
   const { upload, preview, isUploading, clearPreview } = useImageUpload()
+  const { isFreePlan } = useUserPlan()
 
   const handleImageSelect = async (file: File) => {
     const url = await upload(file)
@@ -54,13 +57,43 @@ export default function PostForm({ onSubmit, isLoading }: PostFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+
       {/* 画像アップロード */}
-      <ImageUploader
-        preview={preview}
-        isUploading={isUploading}
-        onFileSelect={handleImageSelect}
-        onClear={handleClearImage}
-      />
+      {isFreePlan ? (
+        <div className="space-y-2">
+          {/* グレーアウトしたアップローダー */}
+          <div className="relative opacity-50 pointer-events-none select-none">
+            <ImageUploader
+              preview={undefined}
+              isUploading={false}
+              onFileSelect={() => {}}
+              onClear={() => {}}
+            />
+          </div>
+          {/* ロックバナー */}
+          <div className="flex items-center justify-between gap-3 rounded-xl border border-yellow-500/30 bg-yellow-500/10 px-4 py-3">
+            <div className="flex items-center gap-2">
+              <span className="text-yellow-400 text-base">🔒</span>
+              <p className="text-xs text-yellow-300 leading-relaxed">
+                画像解析は <span className="font-bold">Lightプラン以上</span> でご利用いただけます
+              </p>
+            </div>
+            <Link
+              href="/pricing"
+              className="shrink-0 rounded-full bg-yellow-400 px-3 py-1 text-xs font-bold text-black hover:bg-yellow-300 transition-colors"
+            >
+              アップグレード
+            </Link>
+          </div>
+        </div>
+      ) : (
+        <ImageUploader
+          preview={preview}
+          isUploading={isUploading}
+          onFileSelect={handleImageSelect}
+          onClear={handleClearImage}
+        />
+      )}
 
       {/* 店舗名 */}
       <div className="space-y-1.5">
