@@ -19,15 +19,16 @@ export function parseGeneratedContent(raw: string): GeneratedContent {
       .trim()
     const parsed = JSON.parse(cleaned) as Record<string, unknown>
     return {
-      instagram: typeof parsed['instagram'] === 'string' ? parsed['instagram'] : '',
-      xPost: typeof parsed['xPost'] === 'string' ? parsed['xPost'] : '',
-      hashtags: Array.isArray(parsed['hashtags'])
-        ? (parsed['hashtags'] as unknown[]).filter((h): h is string => typeof h === 'string')
-        : [],
-      reelsCaption: typeof parsed['reelsCaption'] === 'string' ? parsed['reelsCaption'] : '',
-    }
+  instagram: typeof parsed['instagram'] === 'string' ? parsed['instagram'] : '',
+  xPost: typeof parsed['xPost'] === 'string' ? parsed['xPost'] : '',
+  hashtags: Array.isArray(parsed['hashtags'])
+    ? (parsed['hashtags'] as unknown[]).filter((h): h is string => typeof h === 'string')
+    : [],
+  reelsCaption: typeof parsed['reelsCaption'] === 'string' ? parsed['reelsCaption'] : '',
+  tiktokCaption: typeof parsed['tiktokCaption'] === 'string' ? parsed['tiktokCaption'] : '',
+}
   } catch {
-    return { instagram: '', xPost: '', hashtags: [], reelsCaption: '' }
+   return { instagram: '', xPost: '', hashtags: [], reelsCaption: '', tiktokCaption: '' }
   }
 }
 
