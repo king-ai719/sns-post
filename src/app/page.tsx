@@ -226,53 +226,62 @@ export default function LandingPage() {
         </section>
 
         {/* PRICING */}
-        <section className="lp-section" id="pricing">
-          <div className="lp-section-inner">
-            <div className="lp-tag lp-tag-mint">💰 料金プラン</div>
-            <h2 className="lp-section-title">シンプルで<span style={{ color: '#4ECDC4' }}>わかりやすい</span>料金</h2>
-            <p className="lp-jp" style={{ color: '#888', fontSize: '.88rem', fontWeight: 600, marginTop: '.5rem' }}>まず無料で試してみてください！</p>
-            <div className="lp-pricing-grid">
-              <div className="lp-plan">
-                <div className="lp-plan-name">Free</div>
-                <div className="lp-plan-price">¥<span>0</span></div>
-                <div className="lp-plan-note">ずっと無料</div>
-                <ul className="lp-plan-features">
-                  <li>月10回まで生成</li>
-                  <li>テキストのみ（画像解析なし）</li>
-                  <li>全プラットフォーム対応</li>
-                </ul>
-                <Link href="/sign-up" className="lp-plan-btn lp-plan-btn-outline" style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}>
-                  無料で始める
-                </Link>
-              </div>
-              <div className="lp-plan lp-plan-featured">
-                <div className="lp-plan-badge">🔥 人気No.1</div>
-                <div className="lp-plan-name">Light</div>
-                <div className="lp-plan-price"><sup>¥</sup>980<sub>/月</sub></div>
-                <div className="lp-plan-note">Coming Soon</div>
-                <ul className="lp-plan-features">
-                  <li>月30回まで生成</li>
-                  <li>画像解析あり</li>
-                  <li>履歴保存（30件）</li>
-                  <li>優先サポート</li>
-                </ul>
-                <button className="lp-plan-btn lp-plan-btn-fill">近日公開！</button>
-              </div>
-              <div className="lp-plan">
-                <div className="lp-plan-name">Pro</div>
-                <div className="lp-plan-price"><sup>¥</sup>1,980<sub>/月</sub></div>
-                <div className="lp-plan-note">Coming Soon</div>
-                <ul className="lp-plan-features">
-                  <li>月100回まで生成</li>
-                  <li>画像解析あり</li>
-                  <li>履歴保存 無制限</li>
-                  <li>多店舗管理（近日）</li>
-                </ul>
-                <button className="lp-plan-btn lp-plan-btn-outline">近日公開！</button>
-              </div>
-            </div>
-          </div>
-        </section>
+<section className="lp-section" id="pricing">
+  <div className="lp-section-inner">
+    <div className="lp-tag lp-tag-mint">💰 料金プラン</div>
+    <h2 className="lp-section-title">シンプルで<span style={{ color: '#4ECDC4' }}>わかりやすい</span>料金</h2>
+    <p className="lp-jp" style={{ color: '#888', fontSize: '.88rem', fontWeight: 600, marginTop: '.5rem' }}>まず無料で試してみてください！</p>
+    <div className="lp-pricing-grid">
+      {/* Free */}
+      <div className="lp-plan">
+        <div className="lp-plan-name">Free</div>
+        <div className="lp-plan-price">¥<span>0</span></div>
+        <div className="lp-plan-note">ずっと無料</div>
+        <ul className="lp-plan-features">
+          <li>月10回まで生成</li>
+          <li>テキストのみ（画像解析なし）</li>
+          <li>全プラットフォーム対応</li>
+        </ul>
+        <Link href="/sign-up" className="lp-plan-btn lp-plan-btn-outline" style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}>
+          無料で始める
+        </Link>
+      </div>
+
+      {/* Light */}
+      <div className="lp-plan lp-plan-featured">
+        <div className="lp-plan-badge">🔥 人気No.1</div>
+        <div className="lp-plan-name">Light</div>
+        <div className="lp-plan-price"><sup>¥</sup>980<sub>/月</sub></div>
+        <div className="lp-plan-note">月額・いつでも解約OK</div>
+        <ul className="lp-plan-features">
+          <li>月30回まで生成</li>
+          <li>画像解析あり</li>
+          <li>履歴保存（30件）</li>
+          <li>優先サポート</li>
+        </ul>
+        <Link href="/sign-up" className="lp-plan-btn lp-plan-btn-fill" style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}>
+          Lightで始める →
+        </Link>
+      </div>
+
+      {/* Pro */}
+      <div className="lp-plan">
+        <div className="lp-plan-name">Pro</div>
+        <div className="lp-plan-price"><sup>¥</sup>1,980<sub>/月</sub></div>
+        <div className="lp-plan-note">月額・いつでも解約OK</div>
+        <ul className="lp-plan-features">
+          <li>月100回まで生成</li>
+          <li>画像解析あり</li>
+          <li>履歴保存 無制限</li>
+          <li>多店舗管理（近日）</li>
+        </ul>
+        <Link href="/sign-up" className="lp-plan-btn lp-plan-btn-outline" style={{ display: 'block', textAlign: 'center', textDecoration: 'none' }}>
+          Proで始める →
+        </Link>
+      </div>
+    </div>
+  </div>
+</section>
 
         {/* CTA */}
         <section className="lp-cta">
