@@ -10,8 +10,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Cloudflare Pages 向け（Edge Runtime使用時はこちら）
-  // output: 'export', // 静的エクスポートが必要な場合のみ
+  async rewrites() {
+    return [
+      {
+        source: '/api/clerk-proxy/:path*',
+        destination: 'https://frontend-api.clerk.services/:path*',
+      },
+    ]
+  },
 }
 
 export default nextConfig
