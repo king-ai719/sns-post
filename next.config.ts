@@ -10,14 +10,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/clerk-proxy/:path*',
-        destination: 'https://frontend-api.clerk.services/:path*',
-      },
-    ]
-  },
 }
 
 export default nextConfig
