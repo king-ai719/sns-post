@@ -33,7 +33,8 @@ export default function SignUpPage() {
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
       setPendingVerification(true);
     } catch (err: any) {
-      setError(err.errors?.[0]?.message ?? "エラーが発生しました。もう一度お試しください。");
+      const msg = err.errors?.[0]?.longMessage ?? err.errors?.[0]?.message ?? "エラーが発生しました。もう一度お試しください。";
+      setError(msg);
     } finally {
       setLoading(false);
     }
@@ -48,7 +49,7 @@ export default function SignUpPage() {
       const result = await signUp.attemptEmailAddressVerification({ code });
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
-        router.push("/");
+        router.push("/generate");
       }
     } catch (err: any) {
       setError(err.errors?.[0]?.message ?? "認証コードが正しくありません。");
@@ -63,7 +64,7 @@ export default function SignUpPage() {
       await signUp.authenticateWithRedirect({
         strategy: "oauth_google",
         redirectUrl: "/sso-callback",
-        redirectUrlComplete: "/",
+        redirectUrlComplete: "/generate",
       });
     } catch (err: any) {
       setError(err.errors?.[0]?.message ?? "Googleログインに失敗しました。");
@@ -72,12 +73,10 @@ export default function SignUpPage() {
 
   return (
     <div style={styles.bg}>
-      {/* blobs */}
       <div style={styles.blob1} />
       <div style={styles.blob2} />
       <div style={styles.blob3} />
 
-      {/* nav */}
       <nav style={styles.nav}>
         <Link href="/" style={styles.logo}>
           Sna<span style={styles.logoSpan}>Pick</span> 📸
@@ -85,7 +84,6 @@ export default function SignUpPage() {
         <Link href="/" style={styles.navBack}>← トップに戻る</Link>
       </nav>
 
-      {/* card */}
       <div style={styles.page}>
         <div style={styles.card}>
           {!pendingVerification ? (
@@ -96,7 +94,6 @@ export default function SignUpPage() {
                 <div style={styles.cardSub}>登録は30秒。まずは無料で試せます。</div>
               </div>
 
-              {/* Google */}
               <button style={styles.socialBtn} onClick={handleGoogleSignUp} type="button">
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                   <path d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
@@ -161,6 +158,7 @@ export default function SignUpPage() {
                   />
                 </div>
                 {error && <p style={styles.error}>{error}</p>}
+                <div id="clerk-captcha" />
                 <button style={styles.submitBtn} type="submit" disabled={loading}>
                   {loading ? "処理中..." : "無料で始める 🚀"}
                 </button>
