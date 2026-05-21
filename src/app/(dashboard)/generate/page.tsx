@@ -1,6 +1,6 @@
 'use client'
 
-import { PostForm } from '@/components/features/post-form/PostForm'
+import PostForm from '@/components/features/post-form/PostForm'
 
 export default function GeneratePage() {
   return (
