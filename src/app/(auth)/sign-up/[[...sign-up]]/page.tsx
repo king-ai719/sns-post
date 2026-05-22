@@ -152,6 +152,8 @@ const inputStyle: React.CSSProperties = {
   pointerEvents: "auto",
   position: "relative",
   zIndex: 1,
+  color: "#111",
+  background: "#fff",
 };
 
 const buttonStyle = (disabled: boolean): React.CSSProperties => ({
