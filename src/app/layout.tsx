@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: 'SnaPick - SNS投稿を瞬時に生成',
   description: 'SnaPick - 写真と情報を入力するだけで、AIがInstagramやXの投稿文を自動生成します。飲食店・小規模店舗向け。',
   keywords: ['SNS投稿', 'AI生成', 'Instagram', 'X', 'マーケティング', '飲食店'],
+  icons: {
+    icon: '/favicon.svg',
+  },
 }
 
 export const viewport: Viewport = {
