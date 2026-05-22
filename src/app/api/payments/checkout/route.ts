@@ -19,11 +19,23 @@ export async function POST(req: NextRequest) {
 
     const supabase = createServerSupabase()
 
-    const { data: profile } = await supabase
+    // ★ デバッグ: profilesテーブル取得を分解して原因特定
+    const { data: profile, error: profileError } = await supabase
       .from('profiles')
       .select('id, stripe_customer_id, email')
       .eq('clerk_id', userId)
       .single()
+
+    // ★ profileエラーの詳細を返す（本番では消す）
+    if (profileError) {
+      console.error('Profile fetch error:', JSON.stringify(profileError))
+      return NextResponse.json({
+        error: 'プロフィール取得エラー',
+        detail: profileError.message,
+        code: profileError.code,
+        hint: profileError.hint,
+      }, { status: 500 })
+    }
 
     if (!profile) {
       return NextResponse.json({ error: 'プロフィールが見つかりません' }, { status: 404 })
@@ -36,10 +48,20 @@ export async function POST(req: NextRequest) {
         metadata: { clerk_id: userId, supabase_id: profile.id },
       })
       customerId = customer.id
-      await supabase
+
+      const { error: updateError } = await supabase
         .from('profiles')
         .update({ stripe_customer_id: customerId })
         .eq('id', profile.id)
+
+      // ★ update失敗も検知
+      if (updateError) {
+        console.error('Profile update error:', JSON.stringify(updateError))
+        return NextResponse.json({
+          error: 'カスタマーID保存エラー',
+          detail: updateError.message,
+        }, { status: 500 })
+      }
     }
 
     const session = await stripe.checkout.sessions.create({
@@ -53,8 +75,23 @@ export async function POST(req: NextRequest) {
     })
 
     return NextResponse.json({ url: session.url })
-  } catch (err) {
-    console.error('Stripe checkout error:', err)
-    return NextResponse.json({ error: String(err) }, { status: 500 })
+
+  } catch (err: unknown) {
+    // ★ Stripeエラーの詳細を分解
+    if (err instanceof Stripe.errors.StripeError) {
+      console.error('Stripe error:', err.type, err.message, err.code)
+      return NextResponse.json({
+        error: 'Stripeエラー',
+        type: err.type,
+        message: err.message,
+        code: err.code,
+      }, { status: 500 })
+    }
+
+    console.error('Unexpected error:', err)
+    return NextResponse.json({
+      error: '予期しないエラー',
+      detail: String(err),
+    }, { status: 500 })
   }
 }
