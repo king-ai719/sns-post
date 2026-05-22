@@ -148,6 +148,10 @@ const inputStyle: React.CSSProperties = {
   fontSize: 14,
   outline: "none",
   boxSizing: "border-box",
+  display: "block",
+  pointerEvents: "auto",
+  position: "relative",
+  zIndex: 1,
 };
 
 const buttonStyle = (disabled: boolean): React.CSSProperties => ({
