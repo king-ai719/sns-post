@@ -79,7 +79,7 @@ export default function PostForm({ onSubmit, isLoading }: PostFormProps) {
               </p>
             </div>
             <Link
-              href="/pricing"
+              href="/dashboard"
               className="shrink-0 rounded-full bg-yellow-400 px-3 py-1 text-xs font-bold text-black hover:bg-yellow-300 transition-colors"
             >
               アップグレード
