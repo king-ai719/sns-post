@@ -26,17 +26,20 @@ export default function SignInPage() {
       });
       if (result.status === "complete") {
         await setActive({ session: result.createdSessionId });
-        router.push("/dashboard")
+        router.push("/dashboard");
       }
     } catch (err: unknown) {
-  const e = err as { errors?: { code: string; message: string }[] };
-  const code = e.errors?.[0]?.code;
-  if (code === 'strategy_for_user_invalid') {
-    setError('このアカウントはGoogleログインで登録されています。「Googleで続ける」からログインしてください。');
-  } else {
-    setError(e.errors?.[0]?.message ?? "メールアドレスまたはパスワードが正しくありません。");
-  }
-}
+      const e = err as { errors?: { code: string; message: string }[] };
+      const code = e.errors?.[0]?.code;
+      if (code === 'strategy_for_user_invalid') {
+        setError('このアカウントはGoogleログインで登録されています。「Googleで続ける」からログインしてください。');
+      } else {
+        setError(e.errors?.[0]?.message ?? "メールアドレスまたはパスワードが正しくありません。");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleGoogleSignIn = async () => {
     if (!isLoaded) return;
@@ -47,7 +50,7 @@ export default function SignInPage() {
         redirectUrlComplete: "/dashboard",
       });
     } catch (err: unknown) {
-      const e = err as { errors?: { message: string }[] };
+      const e = err as { errors?: { code: string; message: string }[] };
       setError(e.errors?.[0]?.message ?? "Googleログインに失敗しました。");
     }
   };
@@ -148,12 +151,7 @@ const textMain = "#2D2D2D";
 const white = "#FFFFFF";
 
 const styles: Record<string, React.CSSProperties> = {
-  bg: {
-    minHeight: "100vh", background: "#FFF8FC",
-    display: "flex", flexDirection: "column",
-    fontFamily: "'Nunito', sans-serif",
-    position: "relative", overflow: "hidden",
-  },
+  bg: { minHeight: "100vh", background: "#FFF8FC", display: "flex", flexDirection: "column", fontFamily: "'Nunito', sans-serif", position: "relative", overflow: "hidden" },
   blob1: { position: "fixed", width: 350, height: 350, borderRadius: "50%", background: pinkLight, opacity: 0.35, top: -120, left: -80, zIndex: 0 },
   blob2: { position: "fixed", width: 250, height: 250, borderRadius: "50%", background: "#FFF3D6", opacity: 0.5, bottom: -60, right: -40, zIndex: 0 },
   blob3: { position: "fixed", width: 180, height: 180, borderRadius: "50%", background: "#D4F5F3", opacity: 0.4, top: "40%", left: "5%", zIndex: 0 },
@@ -182,6 +180,7 @@ const styles: Record<string, React.CSSProperties> = {
   badgeRow: { display: "flex", justifyContent: "center", gap: ".5rem", marginTop: "1.5rem", flexWrap: "wrap" },
   badge: { background: pinkPale, border: `1.5px solid ${pinkLight}`, borderRadius: 50, padding: ".25rem .8rem", fontSize: ".72rem", fontWeight: 700, color: pink },
 };
+
 const submitBtnStyle = (disabled: boolean): React.CSSProperties => ({
   width: "100%", padding: ".85rem", background: disabled ? "#ccc" : pink,
   color: white, border: "none", borderRadius: 50, fontSize: ".95rem",
