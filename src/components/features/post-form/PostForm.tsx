@@ -78,12 +78,22 @@ export default function PostForm({ onSubmit, isLoading }: PostFormProps) {
                 画像解析は <span className="font-bold">Lightプラン以上</span> でご利用いただけます
               </p>
             </div>
-            <Link
-              href="/dashboard"
-              className="shrink-0 rounded-full bg-yellow-400 px-3 py-1 text-xs font-bold text-black hover:bg-yellow-300 transition-colors"
-            >
-              アップグレード
-            </Link>
+            <button
+  type="button"
+  onClick={async () => {
+    const priceId = process.env.NEXT_PUBLIC_STRIPE_LIGHT_PRICE_ID
+    const res = await fetch('/api/payments/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ priceId }),
+    })
+    const data = await res.json()
+    if (data.url) window.location.href = data.url
+  }}
+  className="shrink-0 rounded-full bg-yellow-400 px-3 py-1 text-xs font-bold text-black hover:bg-yellow-300 transition-colors"
+>
+  アップグレード
+</button>
           </div>
         </div>
       ) : (
