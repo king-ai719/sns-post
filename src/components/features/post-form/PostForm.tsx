@@ -71,13 +71,13 @@ export default function PostForm({ onSubmit, isLoading }: PostFormProps) {
             />
           </div>
           {/* ロックバナー */}
-          <div className="flex items-center justify-between gap-3 rounded-xl border border-yellow-500/30 bg-yellow-500/10 px-4 py-3">
-            <div className="flex items-center gap-2">
-              <span className="text-yellow-400 text-base">🔒</span>
-              <p className="text-xs text-yellow-300 leading-relaxed">
-                画像解析は <span className="font-bold">Lightプラン以上</span> でご利用いただけます
-              </p>
-            </div>
+          <div className="flex items-center justify-between gap-3 rounded-xl border border-brand/30 bg-pink-50 px-4 py-3">
+  <div className="flex items-center gap-2">
+    <span className="text-brand text-base">🔒</span>
+    <p className="text-xs text-gray-600 leading-relaxed">
+      画像解析は <span className="font-bold text-brand">Lightプラン以上</span> でご利用いただけます
+    </p>
+  </div>
             <button
   type="button"
   onClick={async () => {
