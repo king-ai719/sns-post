@@ -182,3 +182,10 @@ const styles: Record<string, React.CSSProperties> = {
   badgeRow: { display: "flex", justifyContent: "center", gap: ".5rem", marginTop: "1.5rem", flexWrap: "wrap" },
   badge: { background: pinkPale, border: `1.5px solid ${pinkLight}`, borderRadius: 50, padding: ".25rem .8rem", fontSize: ".72rem", fontWeight: 700, color: pink },
 };
+const submitBtnStyle = (disabled: boolean): React.CSSProperties => ({
+  width: "100%", padding: ".85rem", background: disabled ? "#ccc" : pink,
+  color: white, border: "none", borderRadius: 50, fontSize: ".95rem",
+  fontWeight: 800, cursor: disabled ? "not-allowed" : "pointer",
+  boxShadow: disabled ? "none" : "0 4px 0 #d94f83",
+  fontFamily: "'Nunito', sans-serif",
+});
