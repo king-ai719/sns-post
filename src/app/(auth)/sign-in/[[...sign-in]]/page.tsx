@@ -29,12 +29,14 @@ export default function SignInPage() {
         router.push("/dashboard")
       }
     } catch (err: unknown) {
-      const e = err as { errors?: { message: string }[] };
-      setError(e.errors?.[0]?.message ?? "メールアドレスまたはパスワードが正しくありません。");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const e = err as { errors?: { code: string; message: string }[] };
+  const code = e.errors?.[0]?.code;
+  if (code === 'strategy_for_user_invalid') {
+    setError('このアカウントはGoogleログインで登録されています。「Googleで続ける」からログインしてください。');
+  } else {
+    setError(e.errors?.[0]?.message ?? "メールアドレスまたはパスワードが正しくありません。");
+  }
+}
 
   const handleGoogleSignIn = async () => {
     if (!isLoaded) return;
