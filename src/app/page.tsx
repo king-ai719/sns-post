@@ -293,10 +293,15 @@ export default function LandingPage() {
         </section>
 
         {/* FOOTER */}
-        <footer className="lp-footer">
-          <div className="lp-footer-logo">SnaPick 📸</div>
-          <p>© 2026 TechnoManagementService, Inc. All rights reserved.</p>
-        </footer>
+       <footer className="lp-footer">
+  <div className="lp-footer-logo">SnaPick 📸</div>
+  <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+    <a href="/legal" style={{ fontSize: '.75rem', color: '#aaa', textDecoration: 'none' }}>特定商取引法に基づく表記</a>
+    <a href="/terms" style={{ fontSize: '.75rem', color: '#aaa', textDecoration: 'none' }}>利用規約</a>
+    <a href="/privacy" style={{ fontSize: '.75rem', color: '#aaa', textDecoration: 'none' }}>プライバシーポリシー</a>
+    <p style={{ fontSize: '.75rem', color: '#aaa', margin: 0 }}>© 2026 TechnoManagementService, Inc.</p>
+  </div>
+</footer>
       </div>
     </>
   )
