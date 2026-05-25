@@ -140,7 +140,7 @@ export default function LandingPage() {
             </h1>
             <p className="lp-hero-sub lp-jp">
               料理写真をアップするだけ。<br />
-              Instagram・X・リール用の文章と<br />
+              Instagram・X・リール・TikTok用の文章と<br />
               ハッシュタグをAIが自動で作ります。
             </p>
             <div className="lp-hero-btns">
