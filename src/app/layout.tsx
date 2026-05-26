@@ -1,13 +1,13 @@
-import type { Metadata, Viewport } from 'next'
+﻿import type { Metadata, Viewport } from 'next'
 import { ClerkProvider } from '@clerk/nextjs'
 import { Toaster } from 'react-hot-toast'
 import Script from 'next/script'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'SnaPick - SNS謚慕ｨｿ繧堤椪譎ゅ↓逕滓・',
-  description: 'SnaPick - 蜀咏悄縺ｨ諠・ｱ繧貞・蜉帙☆繧九□縺代〒縲、I縺栗nstagram繧Ч縺ｮ謚慕ｨｿ譁・ｒ閾ｪ蜍慕函謌舌＠縺ｾ縺吶る｣ｲ鬟溷ｺ励・蟆剰ｦ乗ｨ｡蠎苓・蜷代￠縲・,
-  keywords: ['SNS謚慕ｨｿ', 'AI逕滓・', 'Instagram', 'X', '繝槭・繧ｱ繝・ぅ繝ｳ繧ｰ', '鬟ｲ鬟溷ｺ・],
+  title: 'SnaPick - SNS投稿文を瞬時に作成',
+  description: 'SnaPick - 写真と情報を入力するだけで、AIがInstagramなどの投稿文を自動生成します。飲食店・美容院・個人事業主向け。',
+  keywords: ['SNS投稿', 'AI生成', 'Instagram', 'X', 'マーケティング', '飲食店'],
   icons: {
     icon: '/favicon.svg',
   },
