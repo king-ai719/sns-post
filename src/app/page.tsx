@@ -141,7 +141,7 @@ export default function LandingPage() {
             <p className="lp-hero-sub lp-jp">
               料理写真をアップするだけ。<br />
               Instagram・X・リール・TikTok用の文章と<br />
-              ハッシュタグをAIが自動で作ります。
+              ハッシュタグをSnaPick が自動で作ります。
             </p>
             <div className="lp-hero-btns">
               <Link href="/sign-up" className="lp-btn-main">無料で始める 🚀</Link>

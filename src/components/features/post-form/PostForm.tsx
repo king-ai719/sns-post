@@ -223,14 +223,14 @@ export default function PostForm({ onSubmit, isLoading }: PostFormProps) {
         {isLoading ? (
           <>
             <div className="w-4 h-4 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-            <span>AI生成中...</span>
+            <span>お任せください！</span>
           </>
         ) : (
           <>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" strokeLinejoin="round"/>
             </svg>
-            <span>投稿文を生成する</span>
+            <span>投稿文をつくる</span>
           </>
         )}
       </button>
