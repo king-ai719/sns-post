@@ -12,6 +12,7 @@ const isPublicRoute = createRouteMatcher([
   '/privacy(.*)',
   '/legal(.*)',
   '/api/webhook(.*)',
+  '/api/payments/webhook(.*)',
 ])
 
 const isAuthRoute = createRouteMatcher([
