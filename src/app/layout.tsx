@@ -6,7 +6,7 @@ import './globals.css'
 
 export const metadata: Metadata = {
   title: 'SnaPick - SNS投稿文を瞬時に作成',
-  description: 'SnaPick - 写真と情報を入力するだけで、AIがInstagramなどの投稿文を自動生成します。飲食店・美容院・個人事業主向け。',
+  description: 'SnaPick - 写真と情報を入力するだけで、SnaPickがInstagramなどの投稿文を自動生成します。飲食店・美容院・個人事業主向け。',
   keywords: ['SNS投稿', 'AI生成', 'Instagram', 'X', 'マーケティング', '飲食店'],
   icons: {
     icon: '/favicon.svg',
