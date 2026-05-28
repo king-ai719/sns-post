@@ -238,7 +238,7 @@ export default function LandingPage() {
         <div className="lp-plan-price">¥<span>0</span></div>
         <div className="lp-plan-note">ずっと無料</div>
         <ul className="lp-plan-features">
-          <li>月10回まで生成</li>
+          <li>月3回まで生成</li>
           <li>テキストのみ（画像解析なし）</li>
           <li>全プラットフォーム対応</li>
         </ul>
