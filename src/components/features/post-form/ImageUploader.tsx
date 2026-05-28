@@ -60,11 +60,11 @@ export default function ImageUploader({
             </div>
           </div>
           <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp"
-            className="hidden"
-            onChange={handleChange}
-          />
+  type="file"
+  accept="image/jpeg,image/png,image/webp"
+  className="hidden"
+  onChange={handleChange}
+/>
         </label>
       )}
     </div>
