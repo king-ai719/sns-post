@@ -46,6 +46,9 @@ export function buildUserPrompt(input: GenerateFormInput): string {
   const target = TARGET_LABELS[input.target] ?? input.target
 
   const lines = [
+    input.imageUrl
+      ? `【画像あり】添付画像を詳細に分析してください。料理の色・盛り付け・食感・雰囲気・器のスタイルなど視覚的な要素を具体的に投稿文に反映させてください。`
+      : `【画像なし】テキスト情報のみで生成してください。`,
     `店舗名: ${input.shopName}`,
     `商品名: ${input.menuName}`,
     input.price ? `価格: ${input.price.toLocaleString()}円` : null,

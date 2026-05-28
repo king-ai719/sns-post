@@ -9,7 +9,7 @@ import Anthropic from '@anthropic-ai/sdk'
 
 // プランごとの月間上限
 const PLAN_LIMITS: Record<string, number> = {
-  free: 10,
+  free: 3,
   light: 30,
   pro: 100,
 }
