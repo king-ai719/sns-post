@@ -62,6 +62,7 @@ export default function ImageUploader({
           <input
   type="file"
   accept="image/jpeg,image/png,image/webp"
+  {...{ capture: 'environment' }}
   className="hidden"
   onChange={handleChange}
 />
