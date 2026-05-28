@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 import ImageUploader from './ImageUploader'
@@ -24,9 +24,16 @@ export default function PostForm({ onSubmit, isLoading }: PostFormProps) {
   const [mood, setMood] = useState<Mood>('温かみ')
   const [target, setTarget] = useState<Target>('ランチ層')
   const [imageUrl, setImageUrl] = useState<string | undefined>()
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveMsg, setSaveMsg] = useState('')
 
   const { upload, preview, isUploading, clearPreview } = useImageUpload()
-  const { isFreePlan } = useUserPlan()
+  const { isFreePlan, storeName } = useUserPlan()
+
+  // 保存済み店舗名を初期値としてセット
+  useEffect(() => {
+    if (storeName) setShopName(storeName)
+  }, [storeName])
 
   const handleImageSelect = async (file: File) => {
     const url = await upload(file)
@@ -38,10 +45,25 @@ export default function PostForm({ onSubmit, isLoading }: PostFormProps) {
     setImageUrl(undefined)
   }
 
+  const handleSaveStore = async () => {
+    if (!shopName.trim()) return
+    setIsSaving(true)
+    try {
+      await fetch('/api/profile/store', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ storeName: shopName.trim() }),
+      })
+      setSaveMsg('保存しました')
+      setTimeout(() => setSaveMsg(''), 2000)
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (!shopName.trim() || !menuName.trim()) return
-
     onSubmit({
       shopName: shopName.trim(),
       menuName: menuName.trim(),
@@ -61,7 +83,6 @@ export default function PostForm({ onSubmit, isLoading }: PostFormProps) {
       {/* 画像アップロード */}
       {isFreePlan ? (
         <div className="space-y-2">
-          {/* グレーアウトしたアップローダー */}
           <div className="relative opacity-50 pointer-events-none select-none">
             <ImageUploader
               preview={null}
@@ -70,30 +91,29 @@ export default function PostForm({ onSubmit, isLoading }: PostFormProps) {
               onClear={() => {}}
             />
           </div>
-          {/* ロックバナー */}
           <div className="flex items-center justify-between gap-3 rounded-xl border border-brand/30 bg-pink-50 px-4 py-3">
-  <div className="flex items-center gap-2">
-    <span className="text-brand text-base">🔒</span>
-    <p className="text-xs text-gray-600 leading-relaxed">
-      画像解析は <span className="font-bold text-brand">Lightプラン以上</span> でご利用いただけます
-    </p>
-  </div>
+            <div className="flex items-center gap-2">
+              <span className="text-brand text-base">🔒</span>
+              <p className="text-xs text-gray-600 leading-relaxed">
+                画像解析は <span className="font-bold text-brand">Lightプラン以上</span> でご利用いただけます
+              </p>
+            </div>
             <button
-  type="button"
-  onClick={async () => {
-    const priceId = process.env.NEXT_PUBLIC_STRIPE_LIGHT_PRICE_ID
-    const res = await fetch('/api/payments/checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ priceId }),
-    })
-    const data = await res.json()
-    if (data.url) window.location.href = data.url
-  }}
-  className="shrink-0 rounded-full bg-yellow-400 px-3 py-1 text-xs font-bold text-black hover:bg-yellow-300 transition-colors"
->
-  アップグレード
-</button>
+              type="button"
+              onClick={async () => {
+                const priceId = process.env.NEXT_PUBLIC_STRIPE_LIGHT_PRICE_ID
+                const res = await fetch('/api/payments/checkout', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ priceId }),
+                })
+                const data = await res.json()
+                if (data.url) window.location.href = data.url
+              }}
+              className="shrink-0 rounded-full bg-yellow-400 px-3 py-1 text-xs font-bold text-black hover:bg-yellow-300 transition-colors"
+            >
+              アップグレード
+            </button>
           </div>
         </div>
       ) : (
@@ -107,9 +127,22 @@ export default function PostForm({ onSubmit, isLoading }: PostFormProps) {
 
       {/* 店舗名 */}
       <div className="space-y-1.5">
-        <label className="block text-sm font-medium text-zinc-300">
-          店舗名 <span className="text-brand text-xs">必須</span>
-        </label>
+        <div className="flex items-center justify-between">
+          <label className="block text-sm font-medium text-zinc-300">
+            店舗名 <span className="text-brand text-xs">必須</span>
+          </label>
+          <div className="flex items-center gap-2">
+            {saveMsg && <span className="text-xs text-green-400">{saveMsg}</span>}
+            <button
+              type="button"
+              onClick={handleSaveStore}
+              disabled={isSaving || !shopName.trim()}
+              className="text-xs text-brand hover:underline disabled:opacity-40"
+            >
+              {isSaving ? '保存中...' : '保存する'}
+            </button>
+          </div>
+        </div>
         <input
           type="text"
           className="input"
