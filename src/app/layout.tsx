@@ -5,6 +5,9 @@ import Script from 'next/script'
 import './globals.css'
 
 export const metadata: Metadata = {
+  verification: {
+    google: "n80d6FPwDq_CK0EN-oV-fnF430UaU_afPhq3J3XAqc8",
+  },
   title: 'SnaPick - SNS投稿文を瞬時に作成',
   description: 'SnaPick - 写真と情報を入力するだけで、SnaPickがInstagramなどの投稿文を自動生成します。飲食店・美容院・個人事業主向け。',
   keywords: ['SNS投稿', 'AI生成', 'Instagram', 'X', 'マーケティング', '飲食店'],
