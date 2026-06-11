@@ -13,6 +13,8 @@ const isPublicRoute = createRouteMatcher([
   '/legal(.*)',
   '/api/webhook(.*)',
   '/api/payments/webhook(.*)',
+  '/sitemap.xml',
+'/robots.txt',
 ])
 
 const isAuthRoute = createRouteMatcher([
