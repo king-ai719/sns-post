@@ -132,7 +132,7 @@ export default function SignInPage() {
           </p>
 
           <div style={styles.badgeRow}>
-            <span style={styles.badge}>✨ 1日3回無料</span>
+            <span style={styles.badge}>✨ 月3回無料</span>
             <span style={styles.badge}>🔒 安心の暗号化</span>
             <span style={styles.badge}>📱 スマホ対応</span>
           </div>
